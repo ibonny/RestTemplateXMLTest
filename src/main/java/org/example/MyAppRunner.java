@@ -10,8 +10,13 @@ public class MyAppRunner implements CommandLineRunner {
     public void run(String... strings) {
         RestTemplate rest = new RestTemplate();
 
-        GeoPlugin result = rest.getForObject("http://www.geoplugin.net/xml.gp?ip=173.67.200.71", GeoPlugin.class);
+        String ipaddr = rest.getForObject("http://icanhazip.com", String.class);
 
+        ipaddr = ipaddr.replace("\n", "");
+
+        GeoPlugin result = rest.getForObject("http://www.geoplugin.net/xml.gp?ip={ipaddr}", GeoPlugin.class, ipaddr);
+
+        System.out.println(result.getRequest());
         System.out.println(result.getCity());
 
         System.exit(1);
